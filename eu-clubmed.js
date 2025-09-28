@@ -1,5 +1,5 @@
 // 多种视频播放方案的尝试
-        function tryMultipleVideoMethods() {
+        document.getElementById('eu-clubmed-video-container').addEventListener('click', function(e) {
             // 方案1: 尝试使用embed标签 (有些CMS支持)
             console.log("test-console----");
             alert("------test-console----");
@@ -101,7 +101,7 @@
             document.body.style.overflow = 'hidden'; // 防止背景滚动
         }
 
-        function closeVideoModal() {
+        document.getElementById('eu-clubmed-modal-close').addEventListener('click', function(e) {
             document.getElementById('euClubmedVideoModal').style.display = 'none';
             document.body.style.overflow = 'auto';
             
