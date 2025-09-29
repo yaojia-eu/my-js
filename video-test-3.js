@@ -1,7 +1,7 @@
  // 视频配置 - 请替换为您的实际视频URL
         const videoConfig = {
             // 方案1: 直接MP4链接（推荐）
-            mp4: 'YOUR_VIDEO_URL.mp4',
+            mp4: 'https://player.vimeo.com/progressive_redirect/playback/1112811167/rendition/1080p/file.mp4?loc=external&log_user=0&signature=a4d204cc37b54fe7f3c721934c5ee005f6ba904c514ef654a9440b2296b6d0b4',
             // 方案2: 备用格式
             webm: 'YOUR_VIDEO_URL.webm',
             ogv: 'YOUR_VIDEO_URL.ogv',
