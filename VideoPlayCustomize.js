@@ -1,8 +1,7 @@
- // 视频配置 - 请替换为您的实际视频URL
+// 视频配置 - 请替换为您的实际视频URL
         const videoConfig = {
             // 方案1: 直接MP4链接（推荐）
-            mp4: 'https://player.vimeo.com/progressive_redirect/playback/1123006386/rendition/1080p/file.mp4?loc=external&log_user=0&signature=8400e5b29ec1c1819845f5517bff88446944e620fb274d2cba8a210b861985d0',
-            // 方案2: 备用格式
+            mp4: 'https://player.vimeo.com/progressive_redirect/playback/1123006386/rendition/1080p/file.mp4?loc=external&log_user=0&signature=8400e5b29ec1c1819845f5517bff88446944e620fb274d2cba8a210b861985d0',            // 方案2: 备用格式
             webm: 'YOUR_VIDEO_URL.webm',
             ogv: 'YOUR_VIDEO_URL.ogv',
             // 方案3: HLS流媒体
@@ -13,8 +12,19 @@
 
         // 动态创建video元素
         function loadDynamicVideo() {
+            
             const container = document.getElementById('videoContainer');
             const placeholder = document.getElementById('videoPlaceholder');
+            
+            if (!container) {
+                console.error('Video container not found');
+                return;
+            }
+            
+            // 标记为已初始化，防止重复初始化
+            if (placeholder) {
+                placeholder.setAttribute('data-initialized', 'true');
+            }
             
             // 显示加载提示
             container.innerHTML = '<div class="eu-clubmed-loading">Loading video</div>';
@@ -112,13 +122,15 @@
             }
         }
 
-        // 页面加载完成后的初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('EU Club Med page loaded - Dynamic video player ready');
+        // 初始化函数 - 绑定事件
+        function initVideoPlayer() {
+            console.log('Initializing video player...');
+            
             // 绑定点击事件到占位符
             const placeholder = document.getElementById('videoPlaceholder');
             if (placeholder) {
                 placeholder.addEventListener('click', function() {
+                    console.log('Placeholder clicked!');
                     loadDynamicVideo();
                 });
                 
@@ -133,10 +145,37 @@
                         loadDynamicVideo();
                     }
                 });
+                
+                console.log('Video player initialized successfully');
+            } else {
+                console.error('Video placeholder not found, retrying...');
+                // 如果元素还没加载，延迟重试
+                setTimeout(initVideoPlayer, 100);
             }
-            
-            // 可选：自动加载视频（取消注释以启用）
-            // setTimeout(function() {
-            //     loadDynamicVideo();
-            // }, 1000);
+        }
+
+        // 多种初始化方式，确保至少有一种能工作
+        
+        // 方式1: DOMContentLoaded（标准方式）
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initVideoPlayer);
+        } else {
+            // 如果文档已经加载完成，直接执行
+            initVideoPlayer();
+        }
+        
+        // 方式2: 立即执行（备用方案）
+        setTimeout(function() {
+            if (!document.getElementById('videoPlaceholder').getAttribute('data-initialized')) {
+                console.log('Backup initialization triggered');
+                initVideoPlayer();
+            }
+        }, 500);
+        
+        // 方式3: window.onload（最保险的备用方案）
+        window.addEventListener('load', function() {
+            if (!document.getElementById('videoPlaceholder').getAttribute('data-initialized')) {
+                console.log('Window load initialization triggered');
+                initVideoPlayer();
+            }
         });
